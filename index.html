@@ -15,9 +15,9 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Your Name — Portfolio" />
 <meta property="og:description" content="Personal portfolio of Your Name." />
-<meta property="og:image" content="frames/f_016.webp" />
+<meta property="og:image" content="Frames/f_016.webp" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff4a5f'/%3E%3Cstop offset='1' stop-color='%23b8102a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff5a6a'/%3E%3Cstop offset='1' stop-color='%238a2be2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2305081a'/%3E%3Ccircle cx='32' cy='32' r='20' fill='url(%23g)'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -78,7 +78,7 @@
   }
   .grain{
     position:fixed; inset:-120px; z-index:3; pointer-events:none; opacity:.06;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.12'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
     animation: grainDrift 8s steps(10) infinite; will-change: transform;
   }
   @keyframes grainDrift{
@@ -284,7 +284,6 @@
   @media (min-width:980px){
     .grid--3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
     .grid--4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
-    /* ⬆ Bento: varied spans, 4→2→1 responsive */
     .grid--bento{ grid-template-columns:repeat(4,minmax(0,1fr)); }
     .grid--bento .bento--wide{ grid-column:span 2; }
     .grid--bento .bento--wide .stat__num{ font-size:clamp(2.6rem,8vw,4rem); }
@@ -413,7 +412,7 @@
     <p class="fallback__title">Portrait frames not loading</p>
     <p class="fallback__text">
       Make sure <code>f_000.webp</code> … <code>f_016.webp</code> exist inside a
-      <code>frames/</code> folder next to <code>index.html</code>.
+      <code>Frames/</code> folder next to <code>index.html</code>.
     </p>
   </div>
 </div>
@@ -664,7 +663,7 @@
   /* 17 frames hain (f_000 se f_016) — f_016 front-facing neutral pose hai */
   var FRAME_COUNT  = 17;
   var FRAME_PAD    = 3;
-  var FRAME_DIR    = 'frames/';
+  var FRAME_DIR    = 'Frames/';
   var FRAME_EXT    = '.webp';
   var CENTER_INDEX = 16;
 
@@ -747,9 +746,6 @@
     lastDrawKey = '';
   }
 
-  /* ⬆ Improved: center-out load order.
-     Pehle CENTER frame load hoga, phir dono taraf se bahar ki taraf —
-     portrait jaldi, sahi pose pe dikhega (pehle sirf left frames pehle aate the). */
   function buildLoadQueue() {
     var queue = [CENTER_INDEX];
     var delta = 1;
@@ -857,14 +853,12 @@
     var desired;
 
     if (hasPointer) {
-      /* ⬆ SAHI: pointer left → f_016 (front), pointer right → f_000 (face right) */
       desired = (1 - pointerNX) * (FRAME_COUNT - 1);
     } else {
       desired = CENTER_INDEX;
     }
 
     if (idle && !reduceMotion) {
-      /* f_016 center hai, isliye sway sirf neeche ki taraf (f_013 tak) */
       desired = CENTER_INDEX - Math.abs(Math.sin(now / 2000)) * 3;
     }
 
@@ -974,8 +968,6 @@
   window.addEventListener('mousemove', function (e) {
     setPointer(e.clientX, e.clientY);
   }, { passive: true });
-  /* ⬆ Added: mouse window se bahar jaane pe portrait wapas center pe aayega —
-     pehle edge pose pe freeze reh jata tha */
   window.addEventListener('mouseout', function (e) {
     if (!e.relatedTarget) {
       hasPointer = false;
@@ -998,179 +990,11 @@
     reduceQuery.addEventListener('change', function (e) {
       reduceMotion = e.matches; lastDrawKey = '';
     });
-  } else if (typeof reduceQuery.addListener === 'function') {
-    reduceQuery.addListener(function (e) {
-      reduceMotion = e.matches; lastDrawKey = '';
-    });
   }
 
-  var navToggle = document.querySelector('.nav__toggle');
-  var navMenu   = document.getElementById('nav-menu');
-  function closeMenu() {
-    if (!navMenu || !navToggle) { return; }
-    navMenu.dataset.open = 'false';
-    navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', 'Open navigation menu');
-  }
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function () {
-      var isOpen = navMenu.dataset.open === 'true';
-      navMenu.dataset.open = isOpen ? 'false' : 'true';
-      navToggle.setAttribute('aria-expanded', String(!isOpen));
-      navToggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
-    });
-    navMenu.addEventListener('click', function (e) {
-      if (e.target && e.target.closest && e.target.closest('a')) { closeMenu(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' || e.key === 'Esc') { closeMenu(); }
-    });
-    /* ⬆ Added: menu ke bahar kisi bhi jagah tap/click karo to menu band ho jaye */
-    document.addEventListener('click', function (e) {
-      if (navMenu.dataset.open !== 'true') { return; }
-      var insideToggle = navToggle.contains(e.target);
-      var insideMenu   = navMenu.contains(e.target);
-      if (!insideToggle && !insideMenu) { closeMenu(); }
-    });
-  }
-
-  var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
-    Array.prototype.forEach.call(reveals, function (el) { io.observe(el); });
-  } else {
-    Array.prototype.forEach.call(reveals, function (el) { el.classList.add('is-in'); });
-  }
-
-  /* ⬆ v5: card spotlight — pointer card ke andar glow ko follow karega */
-  if (!reduceMotion) {
-    document.addEventListener('pointermove', function (e) {
-      var card = e.target.closest && e.target.closest('.card');
-      if (!card) { return; }
-      var r = card.getBoundingClientRect();
-      if (!r.width || !r.height) { return; }
-      card.style.setProperty('--mx',
-        (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
-      card.style.setProperty('--my',
-        (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
-    }, { passive: true });
-  }
-
-  /* ⬆ v4: pehle tap/touch par fullscreen — gesture ke bina browsers allow nahi karte */
-  var fullscreenArmed = !document.fullscreenElement && !document.webkitFullscreenElement;
-  function goFullscreen() {
-    var el = document.documentElement;
-    var req = el.requestFullscreen || el.webkitRequestFullscreen || null;
-    if (!req || document.fullscreenElement || document.webkitFullscreenElement) { return; }
-    fullscreenArmed = false;
-    try {
-      var p = req.call(el, { navigationUI: 'hide' });
-      if (p && typeof p.catch === 'function') { p.catch(function () {}); }
-    } catch (err) {}
-  }
-  if (fullscreenArmed) {
-    ['pointerdown', 'touchstart', 'keydown']
-      .forEach(function (type) {
-        window.addEventListener(type, function onFirst() {
-          window.removeEventListener(type, onFirst);
-          goFullscreen();
-        }, { passive: true, once: true });
-      });
-    document.addEventListener('fullscreenchange', function () {
-      fullscreenArmed = false;
-    });
-  }
-
-  var yearEl = document.getElementById('year');
-  if (yearEl) { yearEl.textContent = String(new Date().getFullYear()); }
-
-  /* ⬆ Skill enhancement v3: scroll progress + active section highlight */
-  var progressEl = document.getElementById('scroll-progress');
-  var navLinkEls = Array.prototype.slice.call(
-    document.querySelectorAll('.nav__link[href^="#"]'));
-  var sectionEls = navLinkEls
-    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
-    .filter(function (el) { return !!el; });
-  var spyTick = false;
-
-  function updateScrollFx() {
-    spyTick = false;
-    var doc = document.documentElement;
-    var max = (doc.scrollHeight - window.innerHeight) || 1;
-    var pos = window.pageYOffset || doc.scrollTop || 0;
-    if (progressEl) {
-      progressEl.style.transform = 'scaleX(' + Math.min(1, pos / max) + ')';
-    }
-    var probe = pos + (window.innerHeight * 0.32);
-    var current = null;
-    sectionEls.forEach(function (sec) {
-      if (sec.offsetTop <= probe) { current = sec; }
-    });
-    navLinkEls.forEach(function (a) {
-      var active = !!current && a.getAttribute('href') === '#' + current.id;
-      a.classList.toggle('is-active', active);
-    });
-  }
-
-  window.addEventListener('scroll', function () {
-    if (!spyTick) { spyTick = true; requestAnimationFrame(updateScrollFx); }
-  }, { passive: true });
-  window.addEventListener('resize', function () {
-    if (!spyTick) { spyTick = true; requestAnimationFrame(updateScrollFx); }
-  }, { passive: true });
-  updateScrollFx();
-
-  /* ⬆ Skill enhancement v3: stat count-up (honest — real values se hi) */
-  var statNums = document.querySelectorAll('.stat__num');
-  function animateStat(el) {
-    var raw = el.textContent;
-    var match = raw.match(/^(\d+)(.*)$/);
-    if (!match) { return; }
-    var target = parseInt(match[1], 10);
-    var suffix = match[2];
-    if (target === 0) { return; }
-    var start = performance.now();
-    var DUR = 1100;
-    function step(now) {
-      var t = Math.min(1, (now - start) / DUR);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (t < 1) { requestAnimationFrame(step); }
-      else { el.textContent = target + suffix; }
-    }
-    requestAnimationFrame(step);
-  }
-  if ('IntersectionObserver' in window && !reduceMotion && statNums.length) {
-    var statIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateStat(entry.target);
-          statIO.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    Array.prototype.forEach.call(statNums, function (el) { statIO.observe(el); });
-  }
-
-  /* ⬆ Skill enhancement v3: subtle haptic on primary CTAs (Android) */
-  if ('vibrate' in navigator && !reduceMotion) {
-    document.addEventListener('click', function (e) {
-      var hit = e.target.closest && e.target.closest('.btn--primary');
-      if (hit) { try { navigator.vibrate(10); } catch (err) {} }
-    });
-  }
-
-  resizeCanvas();
   loadQueue = buildLoadQueue();
   pumpQueue();
-
+  resizeCanvas();
 })();
 </script>
 </body>
